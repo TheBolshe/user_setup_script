@@ -54,3 +54,13 @@ function RestartExplorer {
 
 
 RemoveApps "$PSScriptRoot/Appslist.txt" "> Removing pre-installed apps..."
+
+# *** Uninstall OneDrive for user ***
+cmd.exe /c "start /wait """" ""%SYSTEMROOT%\SYSWOW64\ONEDRIVESETUP.EXE"" /UNINSTALL"
+cmd.exe /c "rd C:\OneDriveTemp /Q /S >NUL 2>&1"
+cmd.exe /c "rd ""%USERPROFILE%\OneDrive"" /Q /S >NUL 2>&1"
+cmd.exe /c "rd ""%LOCALAPPDATA%\Microsoft\OneDrive"" /Q /S >NUL 2>&1"
+cmd.exe /c "rd ""%PROGRAMDATA%\Microsoft OneDrive"" /Q /S >NUL 2>&1"
+cmd.exe /c "reg add ""HKEY_CLASSES_ROOT\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}\ShellFolder"" /f /v Attributes /t REG_DWORD /d 0 >NUL 2>&1"
+cmd.exe /c "reg add ""HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}\ShellFolder"" /f /v Attributes /t REG_DWORD /d 0 >NUL 2>&1"
+Write-Output "OneDrive has been removed. Windows Explorer needs to be restarted."
