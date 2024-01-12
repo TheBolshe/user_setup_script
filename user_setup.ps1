@@ -65,9 +65,8 @@ RemoveApps "$PSScriptRoot/Appslist.txt" "> Removing pre-installed apps..."
 #cmd.exe /c "reg add ""HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}\ShellFolder"" /f /v Attributes /t REG_DWORD /d 0 >NUL 2>&1"
 #Write-Output "OneDrive has been removed. Windows Explorer needs to be restarted."
 
-Get-ChildItem "$PSScriptRoot/Regfiles/*.reg" | ForEach {
-    $Result = Start-Process Reg -ArgumentList Import, $_ -Wait -PassThru
-    echo ( '{0} - {1}' -f $Result.ExitCode, $_.Name)
+ForEach ($file in (Get-ChildItem "$PSScriptRoot/Regfiles/*.reg")) {
+    reg import $file
 }
 
 RestartExplorer
